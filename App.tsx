@@ -1,20 +1,73 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import AllPlaces from './src/screens/AllPlaces';
+import AddPlace from './src/screens/AddPlace';
+import IconButton from './src/components/UI/IconButton';
+import { COLORS } from './src/constants/colors';
+import Map from './src/screens/Map';
+import { init } from './src/utils/database';
+import { useEffect, useState } from 'react';
+import AppLoading from 'expo-app-loading';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  // const [dbInitialized, setDbInitialized] = useState(false);
+  // // execute only once when App loads
+  // useEffect(() => {
+  //   init()
+  //     .then(() => {
+  //       setDbInitialized(true);
+  //     })
+  //     .catch((error) => {
+  //       setDbInitialized(false);
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  // if (!dbInitialized) {
+  //   <AppLoading />;
+  // }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <StatusBar style="dark" />
+      <Stack.Navigator
+        initialRouteName="AllPlaces"
+        screenOptions={{
+          headerStyle: { backgroundColor: COLORS.primary500 },
+          headerTintColor: COLORS.gray700,
+          contentStyle: { backgroundColor: COLORS.gray700 },
+        }}
+      >
+        <Stack.Screen
+          name="AllPlaces"
+          component={AllPlaces}
+          options={({ navigation }) => ({
+            title: 'Your Favorite Places',
+            headerRight: ({ tintColor }) => (
+              <IconButton
+                name="add"
+                size={24}
+                color={tintColor}
+                onPress={() => navigation.navigate('AddPlace')}
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="AddPlace"
+          component={AddPlace}
+          options={{
+            title: 'Add a new Place',
+            headerBackTitle: 'Back',
+          }}
+        />
+        <Stack.Screen name="Map" component={Map} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
