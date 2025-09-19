@@ -13,22 +13,23 @@ import AppLoading from 'expo-app-loading';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  // const [dbInitialized, setDbInitialized] = useState(false);
-  // // execute only once when App loads
-  // useEffect(() => {
-  //   init()
-  //     .then(() => {
-  //       setDbInitialized(true);
-  //     })
-  //     .catch((error) => {
-  //       setDbInitialized(false);
-  //       console.log(error);
-  //     });
-  // }, []);
+  const [dbInitialized, setDbInitialized] = useState(false);
+  // execute only once when App loads
+  useEffect(() => {
+    init()
+      .then(() => {
+        console.log('ok db initialiazed');
+        setDbInitialized(true);
+      })
+      .catch((error) => {
+        setDbInitialized(false);
+        console.log(error);
+      });
+  }, []);
 
-  // if (!dbInitialized) {
-  //   <AppLoading />;
-  // }
+  if (!dbInitialized) {
+    <AppLoading />;
+  }
 
   return (
     <NavigationContainer>
