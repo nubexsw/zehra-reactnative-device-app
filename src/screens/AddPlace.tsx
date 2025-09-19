@@ -6,12 +6,11 @@ import { insertPlace } from '../utils/database';
 
 const AddPlace = ({ navigation }: { navigation: NativeStackNavigationProp<any> }) => {
   const createPlaceHandler = (place: Place) => {
-    insertPlace(place).then((data: any) => {
-      console.log(data);
-    });
-    navigation.navigate('AllPlaces', {
-      place: place,
-    });
+    const innerCall = async () => {
+      await insertPlace(place);
+    };
+    innerCall();
+    navigation.navigate('AllPlaces');
     return {};
   };
   return <PlaceForm onCreatePlace={createPlaceHandler} />;
